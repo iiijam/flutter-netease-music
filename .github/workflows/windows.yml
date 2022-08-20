@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build
+name: Build-Windows
 
 # Controls when the workflow will run
 on:
@@ -14,7 +14,7 @@ on:
   
 env:
   # APP name
-  APP_NAME: IceLiveViewer
+  APP_NAME: fnm
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -28,16 +28,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: 'beta'
           
-      - name: Run read-yaml action
-        id: yaml-data
-        uses: KJ002/read-yaml@main
-        with:
-          file: './pubspec.yaml'
-          key-path: '["version"]' 
-          
-      - name: Build
+      - name: Build Windows
         run: |
           flutter config --enable-windows-desktop
           flutter pub get
@@ -47,7 +40,7 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: IceLiveViewer-${{github.ref_name}}-windows.zip
+          filename: fnm-${{github.ref_name}}-windows.zip
           directory: build/windows/runner/Release
       
       - name: Release
@@ -58,4 +51,4 @@ jobs:
           prerelease: true
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            build/windows/runner/Release/IceLiveViewer-${{github.ref_name}}-windows.zip
+            build/windows/runner/Release/fnm-${{github.ref_name}}-windows.zip
